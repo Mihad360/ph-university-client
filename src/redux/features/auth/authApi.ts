@@ -9,6 +9,9 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+    // getToken: builder.query({
+    //   query: ''
+    // })
   }),
 });
 
