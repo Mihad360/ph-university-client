@@ -6,6 +6,7 @@ import { setUser, TUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import PHForm from "../components/form/PHForm";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -17,21 +18,22 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading("Logging in", { duration: 2000 });
-    try {
-      const userInfo = {
-        id: data.userId,
-        password: data.password,
-      };
-      const res = await createLogin(userInfo).unwrap();
-      const decoded = verifyToken(res?.data.accessToken) as TUser;
-      dispatch(setUser({ user: decoded, token: res?.data.accessToken }));
-      navigate(`/${decoded.role}/dashboard`);
-      toast.success("Logged In Successfully", { id: toastId, duration: 2000 });
-    } catch (error) {
-      toast.error("Logged in failed", { id: toastId, duration: 2000 });
-      console.log(error);
-    }
+    console.log(data);
+    // const toastId = toast.loading("Logging in", { duration: 2000 });
+    // try {
+    //   const userInfo = {
+    //     id: data.userId,
+    //     password: data.password,
+    //   };
+    //   const res = await createLogin(userInfo).unwrap();
+    //   const decoded = verifyToken(res?.data.accessToken) as TUser;
+    //   dispatch(setUser({ user: decoded, token: res?.data.accessToken }));
+    //   navigate(`/${decoded.role}/dashboard`);
+    //   toast.success("Logged In Successfully", { id: toastId, duration: 2000 });
+    // } catch (error) {
+    //   toast.error("Logged in failed", { id: toastId, duration: 2000 });
+    //   console.log(error);
+    // }
   };
 
   return (
@@ -56,7 +58,7 @@ const Login = () => {
             border: "1px solid #e8e8e8",
           }}
         >
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <PHForm onSubmit={onSubmit}>
             <Form.Item label="User ID" style={{ marginBottom: 16 }}>
               <input
                 style={{
@@ -86,7 +88,7 @@ const Login = () => {
             <Button type="primary" htmlType="submit" size="large" block>
               Login
             </Button>
-          </form>
+          </PHForm>
         </Card>
       </Content>
     </Layout>
