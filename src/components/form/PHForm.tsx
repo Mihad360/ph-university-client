@@ -1,16 +1,28 @@
-import { useForm } from "react-hook-form";
+import { ReactNode } from "react";
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 
-const PHForm = ({onSubmit, children}) => {
+type TFormProps = {
+  onSubmit: SubmitHandler<FieldValues>;
+  children: ReactNode;
+};
 
-    const {handleSubmit} = useForm()
+const PHForm = ({ onSubmit, children }: TFormProps) => {
+  const methods = useForm();
 
-    return (
-        <div>
-            <form action="" onSubmit={handleSubmit(onSubmit)}>
-                {children}
-            </form>
-        </div>
-    );
+  return (
+    <div>
+      <FormProvider {...methods}>
+        <form action="" onSubmit={methods.handleSubmit(onSubmit)}>
+          {children}
+        </form>
+      </FormProvider>
+    </div>
+  );
 };
 
 export default PHForm;
