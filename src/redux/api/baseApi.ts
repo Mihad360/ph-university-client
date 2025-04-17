@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { logOut, setUser } from "../features/auth/authSlice";
 import { RootState } from "./../store";
 import {
@@ -24,9 +25,12 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   FetchArgs,
   BaseQueryApi,
   unknown
-> = async (args, api, extraOptions) : Promise<any> => {
+> = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
   // sending refresh Token
+  if (result?.error?.status === 404) {
+    toast.error("User not found", {duration: 2000});
+  }
   console.log(result);
   if (result.error?.status === 401) {
     console.log("sending refresh Token");
