@@ -27,8 +27,7 @@ const CreateAcademicSemester = () => {
     };
     try {
       const res = await createAcademicSemester(semesterData);
-      console.log(res);
-      if(res?.data.success === true){
+      if(res?.data?.success === true){
         toast.success(res?.data.message)
       }
     } catch (error) {
