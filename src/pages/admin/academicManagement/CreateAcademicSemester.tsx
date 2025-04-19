@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { academicSemesterSchema } from "../../../validations/academicManagement.schema";
 import { useCreateAcademicSemesterMutation } from "../../../redux/features/admin/academicManagement.api";
 import { toast } from "sonner";
+import { TResponse } from "../../../types/global";
 
 const currentYear = new Date().getFullYear();
 const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
@@ -17,6 +18,7 @@ const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
 const CreateAcademicSemester = () => {
   const [createAcademicSemester] = useCreateAcademicSemesterMutation();
   const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Loading!");
     const name = semesterOptions[Number(data.name) - 1]?.label;
     const semesterData = {
       name: name,
@@ -26,12 +28,15 @@ const CreateAcademicSemester = () => {
       endMonth: data.endMonth,
     };
     try {
-      const res = await createAcademicSemester(semesterData);
-      if(res?.data?.success === true){
-        toast.success(res?.data.message)
+      const res = (await createAcademicSemester(semesterData)) as TResponse<any>;
+      if (res?.data?.success) {
+        toast.success(res?.data.message, { id: toastId });
+      } else if (res?.error) {
+        toast.error(res?.error.data.message, { id: toastId });
       }
     } catch (error) {
-        toast.error('Academic semester create failed')
+      console.log(error);
+      toast.error("Academic semester create failed");
     }
   };
 

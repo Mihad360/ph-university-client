@@ -12,10 +12,15 @@ const PHSelect = ({ label, name, options }: TPhseletProps) => {
   return (
     <Controller
       name={name}
-      render={({ field, fieldState: {error} }) => (
+      render={({ field, fieldState: { error } }) => (
         <Form.Item label={label}>
-          <Select size="large" {...field} style={{ width: "100%" }} options={options} />
-          <small style={{color: 'red'}}>{error ? error.message : null}</small>
+          <Select
+            size="large"
+            {...field}
+            style={{ width: "100%" }}
+            options={options}
+          />
+          <small style={{ color: "red" }}>{error ? error.message : null}</small>
         </Form.Item>
       )}
     />
