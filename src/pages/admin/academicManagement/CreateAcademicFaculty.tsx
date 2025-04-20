@@ -19,7 +19,7 @@ const CreateAcademicFaculty = () => {
       if (res?.data.success) {
         toast.success(res?.data.message, { id: toastId, duration: 2000 });
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Academic Faculty create failed", {
         id: toastId,
