@@ -28,7 +28,9 @@ const CreateAcademicSemester = () => {
       endMonth: data.endMonth,
     };
     try {
-      const res = (await createAcademicSemester(semesterData)) as TResponse<any>;
+      const res = (await createAcademicSemester(
+        semesterData
+      )) as TResponse<any>;
       if (res?.data?.success) {
         toast.success(res?.data.message, { id: toastId });
       } else if (res?.error) {
