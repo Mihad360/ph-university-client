@@ -22,6 +22,10 @@ const PHForm = ({ onSubmit, children, resolver }: TFormProps) => {
     formConfig["resolver"] = resolver;
   }
   const methods = useForm(formConfig);
+  const submit = (data: FieldValues) => {
+    onSubmit(data)
+    methods.reset()
+  }
 
   return (
     <div>
@@ -29,7 +33,7 @@ const PHForm = ({ onSubmit, children, resolver }: TFormProps) => {
         <Form
           layout="vertical"
           action=""
-          onFinish={methods.handleSubmit(onSubmit)}
+          onFinish={methods.handleSubmit(submit)}
         >
           {children}
         </Form>

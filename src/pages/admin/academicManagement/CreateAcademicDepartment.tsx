@@ -30,7 +30,7 @@ const CreateAcademicDepartment = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("Academic Faculty create failed", {
+      toast.error("Academic Department create failed", {
         id: toastId,
         duration: 2000,
       });
