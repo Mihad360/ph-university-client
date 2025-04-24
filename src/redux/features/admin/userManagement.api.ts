@@ -1,3 +1,5 @@
+import { TQueryParam, TResponseRedux } from "../../../types";
+import { TStudent } from "../../../types/userManagement.type";
 import { baseApi } from "../../api/baseApi";
 
 const userManagementApi = baseApi.injectEndpoints({
@@ -10,13 +12,48 @@ const userManagementApi = baseApi.injectEndpoints({
       }),
     }),
     getAllStudents: builder.query({
-      query: () => ({
-        url: "/students/",
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return { url: "/students/all-students", method: "GET", params: params };
+      },
+      transformResponse: (response: TResponseRedux<TStudent[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+    getEachStudent: builder.query({
+      query: (id) => ({
+        url: `/students/${id}`,
+        method: "GET",
+      }),
+    }),
+    updateStudentStatus: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/users/change-status/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    getEachUserStudent: builder.query({
+      query: (id) => ({
+        url: `/student-user/${id}`,
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useCreateStudentMutation, useGetAllStudentsQuery } =
-  userManagementApi;
+export const {
+  useCreateStudentMutation,
+  useGetAllStudentsQuery,
+  useGetEachStudentQuery,
+  useUpdateStudentStatusMutation,
+  useGetEachUserStudentQuery,
+} = userManagementApi;

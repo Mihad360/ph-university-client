@@ -2,14 +2,16 @@ import { useGetAllAcademicDepartmentQuery } from "../../../redux/features/admin/
 import { Table, TableColumnsType, TableProps } from "antd";
 import { TAcademicDepartment } from "../../../types/academicManagement.type";
 
-export type TTableData = Pick<TAcademicDepartment, "name" & { key: string }>;
+export type TTableData = Pick<TAcademicDepartment, "name" |"academicFaculty" & { key: string }>;
 
 const AcademicDepartment = () => {
-  const { data: academicDepartmentData } = useGetAllAcademicDepartmentQuery(undefined);
+  const { data: academicDepartmentData } =
+    useGetAllAcademicDepartmentQuery(undefined);
   console.log(academicDepartmentData);
   const tableData: TTableData = academicDepartmentData?.data.map((item) => ({
     key: item._id,
     name: item.name,
+    academicFaculty: item.academicFaculty
   }));
 
   const columns: TableColumnsType<TTableData> = [
@@ -28,10 +30,11 @@ const AcademicDepartment = () => {
       //     },
       //   ],
     },
-    // {
-    //   title: "Age",
-    //   dataIndex: "age",
-    // },
+    {
+      title: "Academic Faculty",
+      dataIndex: "academicFaculty",
+      render: (faculty) => faculty?.name || "N/A"
+    },
     // {
     //   title: "Address",
     //   dataIndex: "address",
