@@ -44,6 +44,7 @@ const StudentData = () => {
       fullName,
       profileImg,
       contactNumber,
+      user,
       status: user?.status,
     })
   );

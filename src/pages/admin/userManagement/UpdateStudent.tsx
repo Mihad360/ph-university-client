@@ -1,13 +1,26 @@
 import { useParams } from "react-router-dom";
-import { useGetEachStudentQuery } from "../../../redux/features/admin/userManagement.api";
-import { Button, Col, Divider, Form, Input, Row } from "antd";
+import {
+  useGetEachStudentQuery,
+  useUpdateStudentMutation,
+} from "../../../redux/features/admin/userManagement.api";
+import { Button, Col, Divider, Row } from "antd";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
 import PHSelect from "../../../components/form/PHSelect";
-import { selectValueOptions } from "../../../utils/selectIdAndValueOptions";
+import {
+  selectDepartmentOptions,
+  selectSemesterOptions,
+  selectValueOptions,
+} from "../../../utils/selectIdAndValueOptions";
 import { bloodGroups, genders } from "../../../constants/global";
-import { Controller, FieldValues } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import PHDatePicker from "../../../components/form/PHDatePicker";
+import dayjs from "dayjs";
+import {
+  useGetAllAcademicDepartmentQuery,
+  useGetAllSemesterQuery,
+} from "../../../redux/features/admin/academicManagement.api";
+import { toast } from "sonner";
 
 const genderOptions = selectValueOptions(genders);
 const bloodGroupOptions = selectValueOptions(bloodGroups);
@@ -15,12 +28,23 @@ const bloodGroupOptions = selectValueOptions(bloodGroups);
 const UpdateStudent = () => {
   const params = useParams();
   const { data: studentData, isLoading } = useGetEachStudentQuery(params?.id);
+  const { data: academicSemesterData, isLoading: sIsLoading } =
+    useGetAllSemesterQuery(undefined, { skip: isLoading });
+  const { data: academicDepartmentData, isLoading: dIsLoading } =
+    useGetAllAcademicDepartmentQuery(undefined, { skip: sIsLoading });
+  const [updateStudent] = useUpdateStudentMutation();
+
+  const academicSemesterOptions = selectSemesterOptions(
+    academicSemesterData?.data
+  );
+  const academicDepartmentOptions = selectDepartmentOptions(
+    academicDepartmentData?.data
+  );
 
   if (isLoading) return <p>Loading...</p>;
   if (!studentData?.data) return <div>No student data found</div>;
 
   const {
-    fullName,
     email,
     gender,
     dateOfBirth,
@@ -32,10 +56,38 @@ const UpdateStudent = () => {
     profileImg,
     academicDepartment,
     academicSemester,
+    name,
+    _id,
   } = studentData.data;
+  const defaultUpdateData = {
+    name,
+    email,
+    gender,
+    dateOfBirth: dayjs(dateOfBirth),
+    contactNumber,
+    bloodGroup,
+    guardian,
+    permanentAddress,
+    presentAddress,
+    profileImg,
+    academicDepartment: academicDepartment?._id,
+    academicSemester: academicSemester?._id,
+  };
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Loading!!");
+    const updateStudentData = {
+      student: {
+        ...data,
+        dateOfBirth: dayjs(data?.dateOfBirth).format("YYYY-MM-DD"),
+      },
+    };
+    const res = await updateStudent({ id: _id, ...updateStudentData });
+    if (res?.data?.success) {
+      toast.success(res?.data?.message, { id: toastId, duration: 2000 });
+    } else {
+      toast.error(res?.data?.message, { id: toastId, duration: 2000 });
+    }
   };
 
   return (
@@ -43,6 +95,7 @@ const UpdateStudent = () => {
       <Col span={24}>
         <PHForm
           onSubmit={onSubmit}
+          defaultValues={defaultUpdateData}
           //   resolver={zodResolver(createStudentValidation)}
         >
           <Divider>Personal Info</Divider>
@@ -90,7 +143,7 @@ const UpdateStudent = () => {
                 label="Blood Group"
               ></PHSelect>
             </Col>
-            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+            {/* <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <Controller
                 name="profileImg"
                 render={({ field: { onChange, value, ...field } }) => (
@@ -105,7 +158,7 @@ const UpdateStudent = () => {
                   </Form.Item>
                 )}
               ></Controller>
-            </Col>
+            </Col> */}
             <Divider>Contact Info</Divider>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput name="email" type="text" label="Email"></PHInput>
@@ -168,7 +221,7 @@ const UpdateStudent = () => {
               ></PHInput>
             </Col>
             <Divider>Academic Info</Divider>
-            {/* <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
                 options={academicSemesterOptions}
                 disabled={sIsLoading}
@@ -185,7 +238,7 @@ const UpdateStudent = () => {
                 type="text"
                 label="Academic Department"
               ></PHSelect>
-            </Col> */}
+            </Col>
           </Row>
           <Button htmlType="submit">Submit</Button>
         </PHForm>

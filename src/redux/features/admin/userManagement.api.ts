@@ -47,6 +47,27 @@ const userManagementApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateStudent: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/students/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    createAdmin: builder.mutation({
+      query: (data) => ({
+        url: "/users/create-admin",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    createFaculty: builder.mutation({
+      query: (data) => ({
+        url: "/users/create-faculty",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +77,7 @@ export const {
   useGetEachStudentQuery,
   useUpdateStudentStatusMutation,
   useGetEachUserStudentQuery,
+  useUpdateStudentMutation,
+  useCreateAdminMutation,
+  useCreateFacultyMutation,
 } = userManagementApi;

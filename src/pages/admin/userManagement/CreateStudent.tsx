@@ -21,30 +21,26 @@ import dayjs from "dayjs";
 import { toast } from "sonner";
 
 const studentDummyData = {
-  password: "botmiyad360",
-  student: {
-    name: {
-      firstName: "Montasir",
-      middleName: "Ahmed",
-      lastName: "Mihad",
-    },
-    gender: "male",
-    dateOfBirth: "2005-11-07",
-    bloodGroup: "O+",
-    email: "ahmedmihad@gmail.com",
-    contactNumber: "+455535353335",
-    presentAddress: "123 Main Street, Springfield, USA",
-    permanentAddress: "456 Elm Street, Springfield, USA",
-    guardian: {
-      fatherName: "James Doe",
-      motherName: "Emily Doe",
-      fatherOccupation: "Engineer",
-      motherOccupation: "Teacher",
-      contactNo: "+0987654321",
-    },
-    academicSemester: "67f272fe49d2dbd58a9a8b89",
-    academicDepartment: "67f26f4942224368563e5860",
+  name: {
+    firstName: "Montasir",
+    middleName: "Ahmed",
+    lastName: "Mihad",
   },
+  gender: "male",
+  bloodGroup: "O+",
+  email: "ahmedmihad@gmail.com",
+  contactNumber: "+455535353335",
+  presentAddress: "123 Main Street, Springfield, USA",
+  permanentAddress: "456 Elm Street, Springfield, USA",
+  guardian: {
+    fatherName: "James Doe",
+    motherName: "Emily Doe",
+    fatherOccupation: "Engineer",
+    motherOccupation: "Teacher",
+    contactNo: "+0987654321",
+  },
+  academicSemester: "67f272fe49d2dbd58a9a8b89",
+  academicDepartment: "67f26f4942224368563e5860",
 };
 
 const genderOptions = selectValueOptions(genders);
@@ -73,17 +69,14 @@ const CreateStudent = () => {
         dateOfBirth: dayjs(data?.dateOfBirth).format("YYYY-MM-DD"),
       },
     };
-    console.log(studentData);
     const formData = new FormData();
     formData.append("data", JSON.stringify(studentData));
-    formData.append("file", data?.profileImg)
-    console.log(formData);
+    formData.append("file", data?.profileImg);
     const res = await createStudent(formData);
-    if(res?.data?.success){
-      toast.success(res?.data?.message, {id: toastId, duration: 2000})
-    }
-    else{
-      toast.error(res?.data?.message, {id: toastId, duration: 2000})
+    if (res?.data?.success) {
+      toast.success(res?.data?.message, { id: toastId, duration: 2000 });
+    } else {
+      toast.error(res?.data?.message, { id: toastId, duration: 2000 });
     }
   };
 
@@ -92,6 +85,7 @@ const CreateStudent = () => {
       <Col span={24}>
         <PHForm
           onSubmit={onSubmit}
+          defaultValues={studentDummyData}
           resolver={zodResolver(createStudentValidation)}
         >
           <Divider>Personal Info</Divider>
@@ -142,7 +136,7 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <Controller
                 name="profileImg"
-                render={({ field: { onChange,value, ...field } }) => (
+                render={({ field: { onChange, value, ...field } }) => (
                   <Form.Item label="Profile Image">
                     <Input
                       size="large"

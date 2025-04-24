@@ -4,10 +4,10 @@ export type TSideBarItems = {
   key: string;
   label: ReactNode;
   children?: TSideBarItems[];
-} | undefined;
+};
 
 export type TItems = {
-  name: string;
+  name?: string;
   path?: string;
   element?: ReactNode;
   children?: TItems[];

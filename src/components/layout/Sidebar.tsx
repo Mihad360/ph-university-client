@@ -11,12 +11,16 @@ const userRole = {
   ADMIN: "admin",
   FACULTY: "faculty",
   STUDENT: "student",
+  SUPERADMIN: "superAdmin",
 };
 
 const Sidebar = () => {
   let sidebarItems;
   const user = useAppSelector(useCurrentUser);
   switch (user!.role) {
+    case userRole.SUPERADMIN:
+      sidebarItems = sidebarItemsGenerator(adminPaths, userRole.ADMIN);
+      break;
     case userRole.ADMIN:
       sidebarItems = sidebarItemsGenerator(adminPaths, userRole.ADMIN);
       break;
@@ -30,7 +34,7 @@ const Sidebar = () => {
       break;
   }
   return (
-    <Sider style={{position: 'sticky', top: '0', height: '100vh'}}>
+    <Sider style={{ position: "sticky", top: "0", height: "100vh" }}>
       <div
         style={{
           color: "white",
