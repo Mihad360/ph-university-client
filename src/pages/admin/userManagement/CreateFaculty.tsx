@@ -17,6 +17,7 @@ import {
   useGetAllAcademicFacultyQuery,
 } from "../../../redux/features/admin/academicManagement.api";
 import { useCreateFacultyMutation } from "../../../redux/features/admin/userManagement.api";
+import { TResponse } from "../../../types";
 
 const genderOptions = selectValueOptions(genders);
 const bloodGroupOptions = selectValueOptions(bloodGroups);
@@ -64,11 +65,11 @@ const CreateFaculty = () => {
     const formData = new FormData();
     formData.append("data", JSON.stringify(facultyData));
     formData.append("file", data?.profileImg);
-    const res = await createFaculty(formData);
+    const res = await createFaculty(formData) as TResponse<any>
     if (res?.data?.success) {
       toast.success(res?.data?.message, { id: toastId, duration: 2000 });
     } else {
-      toast.error(res?.data?.message, { id: toastId, duration: 2000 });
+      toast.error(res?.error?.data?.message, { id: toastId, duration: 2000 });
     }
   };
 
