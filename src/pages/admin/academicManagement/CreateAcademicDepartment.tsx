@@ -10,11 +10,12 @@ import {
 import { toast } from "sonner";
 import { selectDepartmentOptions } from "../../../utils/selectIdAndValueOptions";
 
-
 const CreateAcademicDepartment = () => {
   const { data: academicFaculties } = useGetAllAcademicFacultyQuery(undefined);
   const [CreateAcademicDepartment] = useCreateAcademicDepartmentMutation();
-  const academicFacultyOptions = selectDepartmentOptions(academicFaculties?.data);
+  const academicFacultyOptions = selectDepartmentOptions(
+    academicFaculties?.data
+  );
   const onSubmit = async (data: FieldValues) => {
     console.log(data);
     const toastId = toast.loading("Loading!!", { duration: 2000 });

@@ -24,7 +24,7 @@ export type TTableData = Pick<
   | "endDate"
   | "academicSemester"
   | "minCredit"
-  | ("maxCredit" & { key: string; })
+  | ("maxCredit" & { key: string })
 >;
 
 const items = [
@@ -83,21 +83,6 @@ const RegisteredSemesters = () => {
     {
       title: "Registered Semester",
       dataIndex: "academicSemester",
-      // key: "academicSemester",
-      // filters: [
-      //   {
-      //     text: "Autumn",
-      //     value: "Autumn",
-      //   },
-      //   {
-      //     text: "Summer",
-      //     value: "Summer",
-      //   },
-      //   {
-      //     text: "Fall",
-      //     value: "Fall",
-      //   },
-      // ],
     },
     {
       title: "Status",

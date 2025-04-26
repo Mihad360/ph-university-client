@@ -12,3 +12,14 @@ export type TSemesterRegistration = {
   updatedAt: string; // ISO date string
   __v: number;
 };
+
+export type TCourse = {
+  _id: string;
+  title: string;
+  prefix: string;
+  code: number;
+  credits: number;
+  isDeleted: boolean;
+  preRequisiteCourses: []; // or Course[] if you want to nest the full course objects
+  __v: number;
+};

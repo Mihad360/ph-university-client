@@ -12,6 +12,20 @@ export const selectFacultyOptions = (data: any) => {
   }));
 };
 
+export const selectFacultiesOptions = (data: any) => {
+  return data?.map((item: any) => ({
+    label: item.fullName,
+    value: item._id,
+  }));
+};
+
+export const selectCourseOptions = (data: any) => {
+  return data?.map((item: any) => ({
+    label: item.title,
+    value: item._id,
+  }));
+};
+
 export const selectDepartmentOptions = (data: any) => {
   return data?.map((item: any) => ({
     label: item.name,

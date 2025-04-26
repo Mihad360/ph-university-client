@@ -112,6 +112,7 @@ const StudentData = () => {
               <Button>Update</Button>
             </Link>
             <ConfirmModal
+            bgColor="brown"
               buttonText={item?.status === "blocked" ? "Blocked" : "Block"}
               buttonType="primary"
               modalTitle={`Block ❌ ${item.fullName}`}

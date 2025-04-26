@@ -9,6 +9,7 @@ interface ConfirmModalProps {
   onConfirm?: (data?: any) => void;
   okText?: string;
   cancelText?: string;
+  bgColor?: string;
 }
 
 const ConfirmModal = ({
@@ -19,6 +20,7 @@ const ConfirmModal = ({
   onConfirm = () => {},
   okText,
   cancelText,
+  bgColor
 }: ConfirmModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,7 +40,7 @@ const ConfirmModal = ({
   return (
     <>
       <Button
-        style={{ backgroundColor: "brown" }}
+        style={{ backgroundColor: bgColor }}
         type={buttonType}
         onClick={showModal}
         htmlType="submit"
@@ -50,7 +52,7 @@ const ConfirmModal = ({
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText={okText}
+        okText={okText ? okText : null}
         cancelText={cancelText}
       >
         {modalContent}

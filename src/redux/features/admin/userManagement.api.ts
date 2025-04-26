@@ -68,6 +68,12 @@ const userManagementApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    getAllFaculties: builder.query({
+      query: () => ({
+        url: "/faculties/",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -80,4 +86,5 @@ export const {
   useUpdateStudentMutation,
   useCreateAdminMutation,
   useCreateFacultyMutation,
+  useGetAllFacultiesQuery,
 } = userManagementApi;
