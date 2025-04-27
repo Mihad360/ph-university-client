@@ -20,3 +20,12 @@ export const monthOptions = monthNames.map((item) => ({
 
 export const genders = ["male", "female"];
 export const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+export const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];

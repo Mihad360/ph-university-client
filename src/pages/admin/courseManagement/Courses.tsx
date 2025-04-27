@@ -11,6 +11,7 @@ import PHSelect from "../../../components/form/PHSelect";
 import { useGetAllFacultiesQuery } from "../../../redux/features/admin/userManagement.api";
 import { selectFacultiesOptions } from "../../../utils/selectIdAndValueOptions";
 import { useState } from "react";
+import { TResponse } from "../../../types";
 
 export type TTableData = Pick<
   TCourse,
@@ -97,7 +98,7 @@ const AddFacultyModal = ({ data: item }) => {
       id: item?.key,
       data: data,
     };
-    const res = await assignCourseToFaculty(facultyData);
+    const res = (await assignCourseToFaculty(facultyData)) as TResponse<any>;
     console.log(res);
     if (res?.data?.success) {
       toast.success(res?.data?.message, { id: toastId, duration: 2000 });
@@ -141,9 +142,7 @@ const AddFacultyModal = ({ data: item }) => {
             type="text"
             options={facultyOptions}
           ></PHSelect>
-          <Button htmlType="submit">
-            Submit
-          </Button>
+          <Button htmlType="submit">Submit</Button>
         </PHForm>
       </Modal>
     </>

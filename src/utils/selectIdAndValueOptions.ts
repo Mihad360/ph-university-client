@@ -33,6 +33,13 @@ export const selectDepartmentOptions = (data: any) => {
   }));
 };
 
+export const selectSemRegistrationOptions = (data: any) => {
+  return data?.map((item: any) => ({
+    label: `${item.academicSemester.name} - ${item.academicSemester.year} - ${item.status}`,
+    value: item._id,
+  }));
+};
+
 export const selectValueOptions = (data: any) => {
   return data?.map((item: any) => ({
     label: item,
