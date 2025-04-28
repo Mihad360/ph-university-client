@@ -1,4 +1,4 @@
-import { Button, Col, Flex, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
 import PHSelect from "../../../components/form/PHSelect";
@@ -19,13 +19,15 @@ import PHSelectWithWatch from "../../../components/form/PHSelectWithWatch";
 import { useState } from "react";
 import { days } from "../../../constants/global";
 import {
+  useCreateOfferCourseMutation,
   useGetAllCourseQuery,
   useGetAllSemesterRegistrationQuery,
   useGetCourseAssignedFacultiesQuery,
 } from "../../../redux/features/admin/courseManagement.api";
-import { useGetAllFacultiesQuery } from "../../../redux/features/admin/userManagement.api";
 import PHTimePicker from "../../../components/form/PHTimePicker";
 import dayjs from "dayjs";
+import { TResponse } from "../../../types";
+import { toast } from "sonner";
 
 const daysOptions = selectValueOptions(days);
 
@@ -34,15 +36,18 @@ const OfferCourse = () => {
   const { data: academicFacultyData, isLoading: afIsLoading } =
     useGetAllAcademicFacultyQuery(undefined);
   const { data: semesterRegistrationData, isLoading: srIsLoading } =
-    useGetAllSemesterRegistrationQuery(undefined, { skip: afIsLoading });
+    useGetAllSemesterRegistrationQuery([{ name: "sort", value: "year" }], {
+      skip: afIsLoading,
+    });
   const { data: academicDepartmentData, isLoading: asIsLoading } =
     useGetAllAcademicDepartmentQuery(undefined, { skip: srIsLoading });
-  const { data: courseData } = useGetAllCourseQuery(
-    undefined,
-    { skip: asIsLoading }
-  );
-  const { data: assignedFaculties } = useGetCourseAssignedFacultiesQuery(id);
-  console.log(assignedFaculties);
+  const { data: courseData } = useGetAllCourseQuery(undefined, {
+    skip: asIsLoading,
+  });
+  const { data: assignedFaculties } = useGetCourseAssignedFacultiesQuery(id, {
+    skip: !id,
+  });
+  const [createOfferCourse] = useCreateOfferCourseMutation();
   const academicFacultyOptions = selectFacultyOptions(
     academicFacultyData?.data
   );
@@ -53,14 +58,27 @@ const OfferCourse = () => {
     academicDepartmentData?.data
   );
   const courseOptions = selectCourseOptions(courseData?.data);
-  const facultyOptions = selectFacultiesOptions(assignedFaculties?.data?.faculties);
+  const facultyOptions = selectFacultiesOptions(
+    assignedFaculties?.data?.faculties
+  );
   const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Loading!!");
     const offerCourseData = {
       ...data,
+      maxCapacity: Number(data?.maxCapacity),
+      section: Number(data?.section),
       startTime: dayjs(data?.startTime).format("hh:mm"),
       endTime: dayjs(data?.endTime).format("hh:mm"),
     };
-    console.log(offerCourseData);
+    const res = (await createOfferCourse(offerCourseData)) as TResponse<any>;
+    if (res?.data?.success) {
+      toast.success(res?.data?.message, { id: toastId, duration: 2000 });
+    } else {
+      toast.error(res?.error?.data.message, {
+        id: toastId,
+        duration: 4000,
+      });
+    }
   };
 
   return (
@@ -107,14 +125,6 @@ const OfferCourse = () => {
                 name="faculty"
                 type="text"
                 label="Faculty"
-              ></PHSelect>
-            </Col>
-            <Col span={24} md={{ span: 11 }}>
-              <PHSelect
-                options={daysOptions}
-                name="days"
-                type="text"
-                label="Days"
               ></PHSelect>
             </Col>
             <Col span={24} md={{ span: 11 }}>

@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createStudentValidation } from "../../../validations/userManagement.schema";
 import dayjs from "dayjs";
 import { toast } from "sonner";
+import { TResponse } from "../../../types";
 
 const studentDummyData = {
   name: {
@@ -72,11 +73,11 @@ const CreateStudent = () => {
     const formData = new FormData();
     formData.append("data", JSON.stringify(studentData));
     formData.append("file", data?.profileImg);
-    const res = await createStudent(formData);
+    const res = await createStudent(formData) as TResponse<any>
     if (res?.data?.success) {
       toast.success(res?.data?.message, { id: toastId, duration: 2000 });
     } else {
-      toast.error(res?.data?.message, { id: toastId, duration: 2000 });
+      toast.error(res?.error?.data?.message, { id: toastId, duration: 2000 });
     }
   };
 

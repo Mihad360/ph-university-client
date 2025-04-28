@@ -26,9 +26,14 @@ const Login = () => {
         password: data.password,
       };
       const res = await createLogin(userInfo).unwrap();
+      console.log(res);
       const decoded = verifyToken(res?.data.accessToken) as TUser;
       dispatch(setUser({ user: decoded, token: res?.data.accessToken }));
-      navigate(`/${decoded.role}/dashboard`);
+      if (res?.data?.needsPasswordChange) {
+        navigate('/change-password');
+      }else{
+        navigate(`/${decoded.role}/dashboard`);
+      }
       toast.success("Logged In Successfully", { id: toastId, duration: 2000 });
     } catch (error) {
       toast.error("Logged in failed", { id: toastId, duration: 2000 });
