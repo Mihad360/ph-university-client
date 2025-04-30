@@ -5,24 +5,35 @@ import { FieldValues } from "react-hook-form";
 import { useChangePasswordMutation } from "../redux/features/admin/userManagement.api";
 import { TResponse } from "../types";
 import { toast } from "sonner";
+import { useAppDispatch } from "../redux/hooks";
+import { logOut } from "../redux/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
   const [changePassword] = useChangePasswordMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Loading!!!");
     const passwordData = {
       ...data,
     };
+    console.log(passwordData);
     const res = (await changePassword(passwordData)) as TResponse<any>;
     console.log(res);
-    // if (res?.data?.success) {
-    //   toast.success(res?.data?.message, { id: toastId, duration: 2000 });
-    // } else {
-    //   toast.error(res?.error?.data.message, {
-    //     id: toastId,
-    //     duration: 4000,
-    //   });
-    // }
+    if (res?.data?.success) {
+      toast.success(res?.data?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+      dispatch(logOut());
+      navigate('/login')
+    } else {
+      toast.error(res?.error?.data.message, {
+        id: toastId,
+        duration: 4000,
+      });
+    }
   };
 
   return (
@@ -42,7 +53,9 @@ const ChangePassword = () => {
           borderRadius: "8px",
         }}
       >
-        <p style={{color: 'red', fontSize: '18px', paddingBottom: '10px'}}>You need to update/change your password to a new password</p>
+        <p style={{ color: "red", fontSize: "18px", paddingBottom: "10px" }}>
+          You need to update/change your password to a new password
+        </p>
         <PHForm onSubmit={onSubmit}>
           <PHInput label="Old Password" type="text" name="oldPassword" />
           <PHInput label="New Password" type="text" name="newPassword" />

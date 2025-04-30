@@ -73,7 +73,7 @@ const CreateStudent = () => {
     const formData = new FormData();
     formData.append("data", JSON.stringify(studentData));
     formData.append("file", data?.profileImg);
-    const res = await createStudent(formData) as TResponse<any>
+    const res = (await createStudent(formData)) as TResponse<any>;
     if (res?.data?.success) {
       toast.success(res?.data?.message, { id: toastId, duration: 2000 });
     } else {

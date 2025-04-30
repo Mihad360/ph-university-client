@@ -28,6 +28,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
   // sending refresh Token
+  console.log(result.error);
   if (result?.error?.status === 404) {
     toast.error(result?.error?.data?.message, { duration: 2000 });
   }
@@ -59,6 +60,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["semester", "course"],
+  tagTypes: ["semester", "course", "student"],
   endpoints: () => ({}),
 });

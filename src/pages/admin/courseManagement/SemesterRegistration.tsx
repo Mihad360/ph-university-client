@@ -73,12 +73,12 @@ const SemesterRegistration = () => {
           <PHDatePicker
             name="startDate"
             type="number"
-            label="End Month"
+            label="Start Date"
           ></PHDatePicker>
           <PHDatePicker
             name="endDate"
             type="number"
-            label="End Month"
+            label="End Date"
           ></PHDatePicker>
           <Button htmlType="submit">Submit</Button>
         </PHForm>

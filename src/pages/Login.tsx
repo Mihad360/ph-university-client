@@ -18,6 +18,11 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const defaultValues = {
+    userId: "A-0001",
+    password: "admin3600",
+  };
+
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Logging in", { duration: 2000 });
     try {
@@ -27,14 +32,14 @@ const Login = () => {
       };
       const res = await createLogin(userInfo).unwrap();
       console.log(res);
-      const decoded = verifyToken(res?.data.accessToken) as TUser;
-      dispatch(setUser({ user: decoded, token: res?.data.accessToken }));
+      const decoded = verifyToken(res?.data?.accessToken) as TUser;
+      dispatch(setUser({ user: decoded, token: res?.data?.accessToken }));
+      toast.success("Logged In Successfully", { id: toastId, duration: 2000 });
       if (res?.data?.needsPasswordChange) {
-        navigate('/change-password');
-      }else{
+        navigate("/change-password");
+      } else {
         navigate(`/${decoded.role}/dashboard`);
       }
-      toast.success("Logged In Successfully", { id: toastId, duration: 2000 });
     } catch (error) {
       toast.error("Logged in failed", { id: toastId, duration: 2000 });
       console.log(error);
@@ -63,7 +68,7 @@ const Login = () => {
             border: "1px solid #e8e8e8",
           }}
         >
-          <PHForm onSubmit={onSubmit}>
+          <PHForm defaultValues={defaultValues} onSubmit={onSubmit}>
             <PHInput label="User Id" type="text" name="userId"></PHInput>
             <PHInput label="Password" type="text" name="password"></PHInput>
             <Button

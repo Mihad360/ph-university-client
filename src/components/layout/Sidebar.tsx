@@ -32,7 +32,7 @@ const Sidebar = () => {
     user = response;
   }
   let sidebarItems;
-  switch (user!.role) {
+  switch (user?.role) {
     case userRole.SUPERADMIN:
       sidebarItems = sidebarItemsGenerator(adminPaths, userRole.ADMIN);
       break;
