@@ -17,20 +17,25 @@ type TFormProps = {
   children: ReactNode;
 } & TFormConfig;
 
-const PHForm = ({ onSubmit, children, resolver, defaultValues }: TFormProps) => {
+const PHForm = ({
+  onSubmit,
+  children,
+  resolver,
+  defaultValues,
+}: TFormProps) => {
   const formConfig: TFormConfig = {};
 
   if (defaultValues) {
-    formConfig['defaultValues'] = defaultValues;
+    formConfig["defaultValues"] = defaultValues;
   }
 
   if (resolver) {
     formConfig["resolver"] = resolver;
   }
   const methods = useForm(formConfig);
-  const submit = (data: FieldValues) => {
-    onSubmit(data);
-    // methods.reset()
+  const submit = async (data: FieldValues) => {
+    await onSubmit(data);
+    methods.reset();
   };
 
   return (

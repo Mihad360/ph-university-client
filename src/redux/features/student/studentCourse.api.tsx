@@ -24,6 +24,14 @@ const studentCourseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["student"],
     }),
+    updateStudentMark: builder.mutation({
+      query: (data) => ({
+        url: `/enrolled-course/update-enrolled-course-marks`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["student"],
+    }),
   }),
 });
 
@@ -31,4 +39,5 @@ export const {
   useGetMyOfferedCoursesQuery,
   useEnrollCourseMutation,
   useGetAllEnrolledCoursesQuery,
+  useUpdateStudentMarkMutation,
 } = studentCourseApi;
