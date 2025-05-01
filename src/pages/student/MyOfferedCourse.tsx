@@ -57,7 +57,7 @@ const MyOfferedCourse = () => {
           <h1>{item.courseTitle}</h1>
           <Row gutter={[16, 16]}>
             {item.sections.map((sec: any) => (
-              <Col xs={24} sm={12} md={8} lg={6} key={sec._id}>
+              <Col xs={24} sm={12} md={8} lg={6} key={sec}>
                 <Card title={`Section: ${sec.section}`} hoverable>
                   <p>
                     {sec.startTime} - {sec.endTime}

@@ -31,3 +31,26 @@ export type TOfferedCourse = {
   isPreRequisitesFullfiled: boolean;
   isAlreadyEnrolled: boolean;
 };
+
+export type TFacultyCourse = {
+  _id: string;
+  academicSemester: string;
+  academicFaculty: string;
+  semesterRegistration: string;
+  offeredCourse: string;
+  academicDepartment: string;
+  course: string;
+  student: string;
+  faculty: string;
+  isEnrolled: boolean;
+  grade: string;
+  courseMarks: {
+    classTest1: number;
+    midTerm: number;
+    classTest2: number;
+    finalTerm: number;
+  };
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+};
